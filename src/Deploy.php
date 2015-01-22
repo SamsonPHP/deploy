@@ -97,6 +97,11 @@ class Deploy extends Service
         return (filemtime($fullPath) - (ftp_mdtm($this->ftp, basename($fullPath)) + $diff)) > $maxAge;
     }
 
+    /**
+     * Write remote file
+     * @param string $fullPath Local file path
+     * @return bool True if success
+     */
     protected function write($fullPath)
     {
         $fileName = basename($fullPath);
@@ -139,14 +144,7 @@ class Deploy extends Service
                 $this->log('Uploading file [##]', $fullPath);
 
                 // Copy file to remote
-                if (ftp_put($this->ftp, $fileName, $fullPath, FTP_BINARY)) {
-                    // Change rights
-                    ftp_chmod($this->ftp, 0755, $fileName);
-
-                    $this->log('-- Success [##]', $fullPath);
-                } else {
-                    $this->log('-- Failed [##]', $fullPath);
-                }
+                $this->write($fullPath);
             }
         }
 
@@ -167,7 +165,7 @@ class Deploy extends Service
         $localPath = tempnam(sys_get_temp_dir(), 'test');
 
         // Copy file to remote
-        if (ftp_put($this->ftp, $tsFileName, $localPath, FTP_ASCII)) {
+        if ($this->write($localPath)) {
             // Get difference
             $diff = abs(filemtime($localPath) - ftp_mdtm($this->ftp, $tsFileName));
 
@@ -177,7 +175,7 @@ class Deploy extends Service
             ftp_delete($this->ftp, $tsFileName);
         }
 
-        // Remover
+        // Remove
         unlink($localPath);
 
         return $diff;
