@@ -97,6 +97,25 @@ class Deploy extends Service
         return (filemtime($fullPath) - (ftp_mdtm($this->ftp, basename($fullPath)) + $diff)) > $maxAge;
     }
 
+    protected function write($fullPath)
+    {
+        $fileName = basename($fullPath);
+
+        // Copy file to remote
+        if (ftp_put($this->ftp, $fileName, $fullPath, FTP_BINARY)) {
+            // Change rights
+            ftp_chmod($this->ftp, 0755, $fileName);
+
+            $this->log('-- Success [##]', $fullPath);
+
+            return true;
+        } else {
+            $this->log('-- Failed [##]', $fullPath);
+        }
+
+        return false;
+    }
+
     /**
      * Perform synchronizing folder via FTP connection
      * @param string 	$path       Local path for synchronizing
@@ -144,14 +163,11 @@ class Deploy extends Service
     {
         $diff = 0;
 
-        // Cache local path
-        $localPath = $this->sourceroot.'/'.$tsFileName;
-
-        // Create local timestamp
-        file_put_contents($localPath, '1', 0755);
+        // Create temp file
+        $localPath = tempnam(sys_get_temp_dir(), 'test');
 
         // Copy file to remote
-        if (ftp_put($this->ftp, 'timezone.dat', $localPath, FTP_ASCII)) {
+        if (ftp_put($this->ftp, $tsFileName, $localPath, FTP_ASCII)) {
             // Get difference
             $diff = abs(filemtime($localPath) - ftp_mdtm($this->ftp, $tsFileName));
 
@@ -257,11 +273,6 @@ class Deploy extends Service
                 // Create folder
                 $this->mkDir($base);
             }
-
-            // Установим правильный путь к директории на сервере
-            $this->wwwroot = ftp_pwd($this->ftp);
-
-            $this->log('Entered remote folder [##]', $this->wwwroot);
 
             // Выполним синхронизацию папок
             $this->synchronize(
