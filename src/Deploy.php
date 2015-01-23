@@ -264,23 +264,14 @@ class Deploy extends Service
         if ($this->connect()) {
             // If this is remote app - chdir to it
             if (__SAMSON_REMOTE_APP) {
-                $base = str_replace('/', '', __SAMSON_BASE__);
-
                 // Create folder
-                $this->mkDir($base);
+                $this->mkDir(str_replace('/', '', __SAMSON_BASE__));
             }
 
             // Выполним синхронизацию папок
-            $this->synchronize(
-                $this->sourceroot,
-                $this->getTimeDifference()
-            );
+            $this->synchronize($this->sourceroot, $this->getTimeDifference());
 
-            $this->log(
-                'Congratulations! Project[##] has been successfully deployed to [##]',
-                $this->sourceroot,
-                $this->host
-            );
+            $this->log('Project[##] has been successfully deployed to [##]', $this->sourceroot, $this->host);
         }
 
         // close the connection
