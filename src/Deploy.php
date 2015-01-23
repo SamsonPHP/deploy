@@ -48,7 +48,9 @@ class Deploy extends Service
         array_shift($vars);
 
         // Render debug message
-        return trace(debug_parse_markers($message, $vars));
+        trace(debug_parse_markers($message, $vars));
+
+        return false;
     }
 
     /**
@@ -233,23 +235,19 @@ class Deploy extends Service
         $this->ftp = ftp_connect($this->host);
 
         // Login
-        if (false !== ftp_login($this->ftp, $this->username, $this->password)) {
+        if (ftp_login($this->ftp, $this->username, $this->password) !== false) {
             // Switch to passive mode
             ftp_pasv($this->ftp, true);
 
             // Go to root folder
-            if ($this->isWritable() && ftp_chdir($this->ftp, $this->wwwroot)) {
-                return true;
-            } else {
-                $this->log('Remote folder[##] not found', $this->wwwroot);
-
-                return false;
+            if (!$this->isWritable() || !ftp_chdir($this->ftp, $this->wwwroot)) {
+                return $this->log('Remote folder[##] not found', $this->wwwroot);
             }
+
+            return true;
         }
 
-        $this->log('Cannot login to remote server [##@##]', $this->username, $this->host);
-
-        return false;
+        return $this->log('Cannot login to remote server [##@##]', $this->username, $this->host);
     }
 
 
