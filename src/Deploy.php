@@ -79,7 +79,7 @@ class Deploy extends Service
         // Get all entries in path
         foreach (array_diff(scandir($path), array_merge($this->ignorePath, array('..', '.'))) as $entry) {
             // Build full REAL path to entry
-            $result[] = realpath($path . '/' . $entry);
+            $result[$entry] = realpath($path . '/' . $entry);
         }
         return $result;
     }
@@ -106,6 +106,8 @@ class Deploy extends Service
     {
         $fileName = basename($fullPath);
 
+        $this->log('Uploading file [##]', $fullPath);
+
         // Copy file to remote
         if (ftp_put($this->ftp, $fileName, $fullPath, FTP_BINARY)) {
             // Change rights
@@ -131,18 +133,14 @@ class Deploy extends Service
         $this->log('Synchronizing remote folder [##][##]', $path, $diff);
 
         // Check if we can read this path
-        foreach ($this->directoryFiles($path) as $fullPath) {
-            $fileName = basename($fullPath);
+        foreach ($this->directoryFiles($path) as $fileName => $fullPath) {
             // If this is a folder
             if (is_dir($fullPath)) {
                 // Try to create it
                 $this->mkDir($fileName);
-
                 // Go deeper in recursion
                 $this->synchronize($fullPath, $diff);
             } elseif ($this->isOld($fullPath, $diff)) { // Check if file has to be updated
-                $this->log('Uploading file [##]', $fullPath);
-
                 // Copy file to remote
                 $this->write($fullPath);
             }
