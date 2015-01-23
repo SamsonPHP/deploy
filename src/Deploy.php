@@ -195,8 +195,6 @@ class Deploy extends Service
             return true;
         }
 
-        $this->log('Remote path [##] is not writable', $this->wwwroot);
-
         return false;
     }
 
@@ -235,19 +233,24 @@ class Deploy extends Service
         $this->ftp = ftp_connect($this->host);
 
         // Login
-        if (ftp_login($this->ftp, $this->username, $this->password) !== false) {
-            // Switch to passive mode
-            ftp_pasv($this->ftp, true);
-
-            // Go to root folder
-            if (!$this->isWritable() || !ftp_chdir($this->ftp, $this->wwwroot)) {
-                return $this->log('Remote folder[##] not found', $this->wwwroot);
-            }
-
-            return true;
+        if (!ftp_login($this->ftp, $this->username, $this->password) !== false) {
+            return $this->log('Cannot login to remote server [##@##]', $this->username, $this->host);
         }
 
-        return $this->log('Cannot login to remote server [##@##]', $this->username, $this->host);
+        // Switch to passive mode
+        ftp_pasv($this->ftp, true);
+
+        // Go to root folder
+        if (!ftp_chdir($this->ftp, $this->wwwroot)) {
+            return $this->log('Remote folder[##] not found', $this->wwwroot);
+        }
+
+        // Check if we can write there
+        if ($this->isWritable()) {
+            return $this->log('Remote path [##] is not writable', $this->wwwroot);
+        }
+
+        return true;
     }
 
 
