@@ -91,7 +91,7 @@ class Deploy extends Service
         }
 
         // Check configuration
-        if (!isset($this->sourceroot{0})) {
+        if (!isset($this->wwwroot{0})) {
             return $this->error('Remote project folder['.$this->wwwroot.'] is not specified');
         }
 
