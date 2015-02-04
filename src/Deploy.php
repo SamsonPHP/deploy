@@ -2,6 +2,7 @@
 namespace samsonphp\deploy;
 
 use samson\core\Service;
+use samsonphp\event\Event;
 
 /**
  * SamsonPHP deployment service
