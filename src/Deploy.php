@@ -87,33 +87,28 @@ class Deploy extends Service
     {
         // Check configuration
         if (!isset($this->sourceroot{0})) {
-            // Signal error
-            Event::fire(
-                'error',
-                array(
-                    $this,
-                    'Local project folder['.$this->sourceroot.'] is not specified'
-                )
-            );
-
-            return false;
+            return $this->error('Local project folder['.$this->sourceroot.'] is not specified');
         }
 
         // Check configuration
         if (!isset($this->sourceroot{0})) {
-            // Signal error
-            Event::fire(
-                'error',
-                array(
-                    $this,
-                    'Remote project folder['.$this->wwwroot.'] is not specified'
-                )
-            );
-
-            return false;
+            return $this->error('Remote project folder['.$this->wwwroot.'] is not specified');
         }
 
         return parent::init($params);
+    }
+
+    /**
+     * Signal module error
+     * @param string $message error message
+     * @return bool false
+     */
+    public function error($message)
+    {
+        // Signal error
+        Event::fire('error', array($this, $message));
+
+        return false;
     }
 
     /** Controller to perform deploy routine */
