@@ -5,6 +5,8 @@ namespace tests;
 use samson\core\Error;
 use samson\core\Service;
 
+define('__TESTS', true);
+
 require 'ftp_mockup.php';
 
 /**
@@ -22,17 +24,23 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         Error::$OUTPUT = false;
 
         $this->deploy = Service::getInstance('\samsonphp\deploy\Deploy');
-        $this->deploy->wwwroot = 'test';
-        $this->deploy->sourceroot = sys_get_temp_dir();
-        $this->deploy->init();
     }
 
     public function testFailedInit()
     {
         $this->deploy->wwwroot = '';
         $this->deploy->init();
-
         $this->deploy->sourceroot = '';
+        $this->deploy->init();
+    }
+
+    public function testInit()
+    {
+        $this->deploy->wwwroot = 'test';
+        $this->deploy->host = 'test';
+        $this->deploy->username = 'test';
+        $this->deploy->password = 'test';
+        $this->deploy->sourceroot = 'test';
         $this->deploy->init();
     }
 
