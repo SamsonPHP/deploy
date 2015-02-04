@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "samsonphp/event": "1.*"
+        "samsonos/core": "1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*"
