@@ -2,9 +2,10 @@
 namespace tests;
 
 // Load global function mockup
-require 'ftp_mockup.php';
+use samson\core\Error;
+use samson\core\Service;
 
-use samsonphp\deploy\Deploy;
+require 'ftp_mockup.php';
 
 /**
  * Created by Vitaly Iegorov <egorov@samsonos.com>
@@ -18,9 +19,9 @@ class DeployTest extends \PHPUnit_Framework_TestCase
     /** Tests init */
     public function setUp()
     {
-        \samson\core\Error::$OUTPUT = false;
+        Error::$OUTPUT = false;
 
-        $this->deploy = \samson\core\Service::getInstance('\samsonphp\deploy\Deploy');
+        $this->deploy = Service::getInstance('\samsonphp\deploy\Deploy');
         $this->deploy->wwwroot = 'test';
         $this->deploy->sourceroot = sys_get_temp_dir();
         $this->deploy->init();
