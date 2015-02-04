@@ -36,24 +36,6 @@ class Deploy extends Service
     public $password= '';
 
     /**
-     * Generic log function for further modification
-     * @param string $message
-     * @return mixed
-     */
-    protected function log($message)
-    {
-        // Get passed vars
-        $vars = func_get_args();
-        // Remove first message var
-        array_shift($vars);
-
-        // Render debug message
-        trace(debug_parse_markers($message, $vars));
-
-        return false;
-    }
-
-    /**
      * Get all entries in $path
      * @param string $path Folder path for listing
      * @return array Collection of entries int folder
@@ -75,7 +57,7 @@ class Deploy extends Service
      */
     protected function synchronize($path)
     {
-        $this->log('Synchronizing remote folder [##]', $path);
+        $this->remote->log('Synchronizing remote folder [##]', $path);
 
         // Check if we can read this path
         foreach ($this->directoryFiles($path) as $fileName => $fullPath) {
@@ -104,13 +86,29 @@ class Deploy extends Service
     {
         // Check configuration
         if (!isset($this->sourceroot{0})) {
-            $this->log('Local folder[##] is not specified', $this->sourceroot);
+            // Signal error
+            Event::fire(
+                'error',
+                array(
+                    $this,
+                    'Local project folder['.$this->sourceroot.'] is not specified'
+                )
+            );
+
             return false;
         }
 
         // Check configuration
         if (!isset($this->sourceroot{0})) {
-            $this->log('Remote folder[##] is not specified', $this->wwwroot);
+            // Signal error
+            Event::fire(
+                'error',
+                array(
+                    $this,
+                    'Remote project folder['.$this->wwwroot.'] is not specified'
+                )
+            );
+
             return false;
         }
 
@@ -138,7 +136,7 @@ class Deploy extends Service
             // Выполним синхронизацию папок
             $this->synchronize($this->sourceroot);
 
-            $this->log('Project[##] has been successfully deployed to [##]', $this->sourceroot, $this->host);
+            $this->remote->log('Project[##] has been successfully deployed to [##]', $this->sourceroot, $this->host);
         }
     }
 }

@@ -19,7 +19,7 @@ class Remote
     /** @var string Current remote folder path */
     protected $currentFolder;
 
-    /** @var float Time difference between remote and local */
+    /** @var integer Time difference between remote and local */
     protected $timeDiff;
 
     /**
@@ -27,7 +27,7 @@ class Remote
      * @param string $message
      * @return mixed
      */
-    protected function log($message)
+    public function log($message)
     {
         // Get passed vars
         $vars = func_get_args();
@@ -83,10 +83,9 @@ class Remote
 
     /**
      * Get time difference between servers
-     * @param string $tsFileName TS file name(timezone.dat)
-     * @return float|int Time difference between servers
+     * @return integer Time difference between servers
      */
-    protected function getTimeDifference($tsFileName = 'timezone.dat')
+    protected function getTimeDifference()
     {
         $diff = 0;
 
@@ -101,7 +100,7 @@ class Remote
             $diff = abs(filemtime($localPath) - ftp_mdtm($this->handle, $tsFileName));
 
             // Convert to hours
-            $diff = $diff > 3600 ? (floor($diff / 3600) * 3600 + $diff % 3600) : 0;
+            $diff = (integer)($diff > 3600 ? (floor($diff / 3600) * 3600 + $diff % 3600) : 0);
 
             $this->log('Time difference between servers is [##]', $diff);
 
