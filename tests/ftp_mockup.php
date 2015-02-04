@@ -4,21 +4,21 @@ namespace samsonphp\deploy;
 
 function ftp_connect($host)
 {
-    return true;
+    return $host = true;
 }
 
-function ftp_login($handle, $login, $pwd)
+function ftp_login($handle = true, $login, $pwd = '')
 {
     if($login == 'test') {
-        return true;
+        return $handle = true;
     }
 
     return false;
 }
 
-function ftp_pasv($handle, $bool)
+function ftp_pasv($handle = true, $bool = true)
 {
-    return true;
+    return $handle = true;
 }
 
 function ftp_mdtm($handle, $file)
@@ -26,9 +26,9 @@ function ftp_mdtm($handle, $file)
     return ftp_login($handle, $file, $file);
 }
 
-function ftp_close($handle)
+function ftp_close($handle = true)
 {
-    return true;
+    return $handle = true;
 }
 
 function ftp_delete($handle, $file)
@@ -36,9 +36,9 @@ function ftp_delete($handle, $file)
     return ftp_login($handle, $file, $file);
 }
 
-function ftp_cdup($handle)
+function ftp_cdup($handle = true)
 {
-    return true;
+    return $handle = true;
 }
 
 function ftp_chdir($handle, $dir)
@@ -51,12 +51,12 @@ function ftp_mkdir($handle, $dir)
     return ftp_login($handle, $dir, $dir);
 }
 
-function ftp_chmod($handle, $rights, $dir)
+function ftp_chmod($handle, $rights, $dir = true)
 {
-    return ftp_login($handle, $rights, $source);
+    return ftp_login($handle, $rights, $dir = $rights);
 }
 
-function ftp_put($handle, $fileName, $source, $mode)
+function ftp_put($handle, $fileName, $source, $mode = true)
 {
     static $switch;
 
@@ -64,6 +64,6 @@ function ftp_put($handle, $fileName, $source, $mode)
         return $switch = !$switch;
     }
 
-    return ftp_login($handle, $fileName, $source);
+    return ftp_login($handle, $mode = $fileName, $source);
 }
 
