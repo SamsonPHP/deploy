@@ -59,8 +59,11 @@ function ftp_chmod($handle, $rights, $dir = true)
 function ftp_put($handle, $fileName, $source, $mode = true)
 {
     static $switch;
+    if (!isset($switch)) {
+        $switch = true;
+    }
 
-    if (!isset($switch) && strpos($source, sys_get_temp_dir()) !== false) {
+    if (strpos($source, sys_get_temp_dir()) !== false) {
         return $switch = !$switch;
     }
 
