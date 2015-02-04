@@ -37,6 +37,7 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         $this->deploy->remote = null;
         $this->deploy->wwwroot = '';
         $this->deploy->init();
+        $this->deploy->__BASE();
         $this->deploy->sourceroot = '';
         $this->deploy->init();
     }
