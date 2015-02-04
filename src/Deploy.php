@@ -16,7 +16,7 @@ class Deploy extends Service
     protected $id = 'deploy';
 
     /** @var Remote */
-    protected $remote;
+    public $remote;
 
     /** @var array Collection of path names to be ignored */
     public $ignorePath = array('cms');
@@ -116,8 +116,11 @@ class Deploy extends Service
     {
         $this->title('Deploying project to '.$this->host);
 
-        // Create remote connection instance
-        $this->remote = new Remote($this->host, $this->username, $this->password);
+        // If no remote class name is set
+        if (!isset($this->remote)) {
+            // Create remote connection instance
+            $this->remote = new Remote($this->host, $this->username, $this->password);
+        }
 
         // Go to project remote folder
         if ($this->remote->cd($this->wwwroot)) {

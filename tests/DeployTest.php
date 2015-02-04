@@ -22,6 +22,9 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         Error::$OUTPUT = false;
 
         $this->deploy = Service::getInstance('\samsonphp\deploy\Deploy');
+        $this->deploy->remote = $this->getMockBuilder('\samsonphp\deploy\Remote')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->deploy->wwwroot = 'test';
         $this->deploy->host = 'test';
         $this->deploy->username = 'test';
