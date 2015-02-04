@@ -5,8 +5,6 @@ namespace tests;
 use samson\core\Error;
 use samson\core\Service;
 
-define('__TESTS', true);
-
 require 'ftp_mockup.php';
 
 /**

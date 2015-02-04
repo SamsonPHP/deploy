@@ -116,14 +116,6 @@ class Deploy extends Service
     {
         $this->title('Deploying project to '.$this->host);
 
-        //[PHPCOMPRESSOR(remove,start)]
-        if (!defined('__TESTS')) {
-        //[PHPCOMPRESSOR(remove,end)]
-            s()->async(true);
-        //[PHPCOMPRESSOR(remove,start)]
-        }
-        //[PHPCOMPRESSOR(remove,end)]
-
         // Create remote connection instance
         $this->remote = new Remote($this->host, $this->username, $this->password);
 
