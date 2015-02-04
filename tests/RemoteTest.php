@@ -48,7 +48,12 @@ class MainTest extends \PHPUnit_Framework_TestCase
 
     public function testCD()
     {
-        $this->assertEquals(true, $this->remote->cd('test'));
-        $this->assertEquals(false, $this->remote->cd('test2'));
+        $this->remote->cd('test');
+        $this->remote->cd('test2');
+    }
+
+    public function testIsOld()
+    {
+        $this->assertEquals(false, $this->remote->isOld('test'));
     }
 }
