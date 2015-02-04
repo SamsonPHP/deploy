@@ -8,6 +8,7 @@
             "email":"egorov@samsonos.com"
         }
     ],
+    "minimum-stability":"dev",
     "require": {
         "samsonos/core": "1.*"
     },
