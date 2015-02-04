@@ -82,16 +82,13 @@ class Remote
     }
 
     /**
-     * Get time difference between servers
-     * @return integer Time difference between servers
+     * Write temp file to remote system and count difference
+     * @param string $localPath Path to local file
+     * @return int Time difference between systems
      */
-    protected function getTimeDifference()
+    private function writeTempFile($localPath)
     {
-        $diff = 0;
-
-        // Create temp file
-        $localPath = tempnam(sys_get_temp_dir(), 'test');
-
+        // Remote file name
         $tsFileName = basename($localPath);
 
         // Copy file to remote
@@ -99,15 +96,30 @@ class Remote
             // Get difference
             $diff = abs(filemtime($localPath) - ftp_mdtm($this->handle, $tsFileName));
 
-            // Convert to hours
-            $diff = (integer)($diff > 3600 ? (floor($diff / 3600) * 3600 + $diff % 3600) : 0);
-
             $this->log('Time difference between servers is [##]', $diff);
 
             ftp_delete($this->handle, $tsFileName);
+
+            // Convert to hours
+            return (integer)($diff > 3600 ? (floor($diff / 3600) * 3600 + $diff % 3600) : 0);
         }
 
-        // Remove
+        return 0;
+    }
+
+    /**
+     * Get time difference between servers
+     * @return integer Time difference between servers
+     */
+    protected function getTimeDifference()
+    {
+        // Create temp file
+        $localPath = tempnam(sys_get_temp_dir(), 'test');
+
+        // Count time difference
+        $diff = $this->writeTempFile($localPath);
+
+        // Remove local temp file
         unlink($localPath);
 
         return $diff;
