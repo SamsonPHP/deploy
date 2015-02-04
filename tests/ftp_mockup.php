@@ -61,7 +61,7 @@ function ftp_put($handle, $fileName, $source, $mode)
     static $switch;
 
     if (!isset($switch) && strpos($source, sys_get_temp_dir()) !== false) {
-        return $switch = true;
+        return $switch = !$switch;
     }
 
     return ftp_login($handle, $fileName, $source);
