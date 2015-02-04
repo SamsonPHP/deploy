@@ -22,6 +22,11 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         Error::$OUTPUT = false;
 
         $this->deploy = Service::getInstance('\samsonphp\deploy\Deploy');
+        $this->deploy->wwwroot = 'test';
+        $this->deploy->host = 'test';
+        $this->deploy->username = 'test';
+        $this->deploy->password = 'test';
+        $this->deploy->sourceroot = 'test';
     }
 
     public function testFailedInit()
@@ -34,11 +39,6 @@ class DeployTest extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $this->deploy->wwwroot = 'test';
-        $this->deploy->host = 'test';
-        $this->deploy->username = 'test';
-        $this->deploy->password = 'test';
-        $this->deploy->sourceroot = 'test';
         $this->deploy->init();
     }
 
