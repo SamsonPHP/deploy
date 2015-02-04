@@ -1,16 +1,13 @@
 <?php
 namespace tests;
 
-// Load global function mockup
-require 'ftp_mockup.php';
-
 use samsonphp\deploy\Remote;
 
 /**
  * Created by Vitaly Iegorov <egorov@samsonos.com>
  * on 04.08.14 at 16:42
  */
-class MainTest extends \PHPUnit_Framework_TestCase
+class RemoteTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \samsonphp\deploy\Remote */
     public $remote;
