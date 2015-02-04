@@ -37,6 +37,7 @@ class DeployTest extends \PHPUnit_Framework_TestCase
 
     public function testBase()
     {
+        define('__SAMSON_REMOTE_APP', true);
         $this->deploy->__BASE();
     }
 }
