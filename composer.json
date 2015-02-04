@@ -8,9 +8,8 @@
             "email":"egorov@samsonos.com"
         }
     ],
-    "minimum-stability":"dev",
     "require": {
-        "samsonos/core": "1.*"
+        "samsonos/php_core": "1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*"
