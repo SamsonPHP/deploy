@@ -34,6 +34,7 @@ class DeployTest extends \PHPUnit_Framework_TestCase
 
     public function testFailedInit()
     {
+        $this->deploy->remote = null;
         $this->deploy->wwwroot = '';
         $this->deploy->init();
         $this->deploy->sourceroot = '';
@@ -53,6 +54,12 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         remote
             ->expects($this->once())
             ->method('cd')
+            ->willReturn(true);
+
+        // Add method stub
+        $this->deploy->
+        remote
+            ->method('isOld')
             ->willReturn(true);
 
         $this->deploy->__BASE();

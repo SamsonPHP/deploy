@@ -46,6 +46,8 @@ class RemoteTest extends \PHPUnit_Framework_TestCase
     public function testCD()
     {
         $this->remote->cd('test');
+        $this->remote->cd('test');
+        $this->remote->cd('test2');
         $this->remote->cd('test2');
     }
 
