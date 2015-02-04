@@ -111,6 +111,21 @@ class Deploy extends Service
         return false;
     }
 
+    /**
+     * Perform project deployment
+     */
+    protected function deploy()
+    {
+        // If this is remote app - chdir to it
+        if (__SAMSON_REMOTE_APP) {
+            // Create folder
+            $this->remote->mkDir(str_replace('/', '', __SAMSON_BASE__));
+        }
+
+        // Выполним синхронизацию папок
+        $this->synchronize($this->sourceroot);
+    }
+
     /** Controller to perform deploy routine */
     public function __BASE()
     {
@@ -124,14 +139,8 @@ class Deploy extends Service
 
         // Go to project remote folder
         if ($this->remote->cd($this->wwwroot)) {
-            // If this is remote app - chdir to it
-            if (__SAMSON_REMOTE_APP) {
-                // Create folder
-                $this->remote->mkDir(str_replace('/', '', __SAMSON_BASE__));
-            }
 
-            // Выполним синхронизацию папок
-            $this->synchronize($this->sourceroot);
+            $this->deploy();
 
             $this->remote->log('Project[##] has been successfully deployed to [##]', $this->sourceroot, $this->host);
         }
