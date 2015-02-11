@@ -118,10 +118,17 @@ class Deploy extends Service
     {
         // If this is remote app - chdir to it
         if (__SAMSON_REMOTE_APP) {
+
+            // Change source root to internal web-application
+            $this->sourceroot = $this->sourceroot.str_replace('/', '', __SAMSON_BASE__);
+
+            // Change source root to internal web-application
+            $this->wwwroot = $this->wwwroot.str_replace('/', '', __SAMSON_BASE__);
+
             // Create folder
             $this->remote->mkDir(str_replace('/', '', __SAMSON_BASE__));
         }
-
+        
         // Выполним синхронизацию папок
         $this->synchronize($this->sourceroot);
     }
