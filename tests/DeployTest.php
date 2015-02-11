@@ -29,7 +29,7 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         $this->deploy->host = 'test';
         $this->deploy->username = 'test';
         $this->deploy->password = 'test';
-        $this->deploy->sourceroot = sys_get_temp_dir();
+        $this->deploy->sourceroot = sys_get_temp_dir().'/';
     }
 
     public function testFailedInit()
