@@ -49,6 +49,9 @@ class DeployTest extends \PHPUnit_Framework_TestCase
 
     public function testBase()
     {
+        // Create temporary file
+        tempnam(sys_get_temp_dir(), 'test');
+
         // Add method stub
         $this->deploy->
         remote
