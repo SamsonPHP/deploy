@@ -128,7 +128,7 @@ class Deploy extends Service
             // Create folder
             $this->remote->mkDir(str_replace('/', '', __SAMSON_BASE__));
         }
-        
+
         // Выполним синхронизацию папок
         $this->synchronize($this->sourceroot);
     }
