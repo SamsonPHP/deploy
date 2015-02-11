@@ -52,9 +52,16 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         // Add method stub
         $this->deploy->
         remote
-            ->expects($this->once())
             ->method('cd')
             ->willReturn(true);
+
+        // Add method stub
+        $this->deploy->
+        remote
+            ->method('isOld')
+            ->willReturn(true);
+
+        $this->deploy->__BASE();
 
         define('__SAMSON_REMOTE_APP', true);
 
@@ -63,7 +70,7 @@ class DeployTest extends \PHPUnit_Framework_TestCase
         remote
             ->expects($this->once())
             ->method('cd')
-            ->willReturn(true);
+            ->willReturn(false);
 
         $this->deploy->__BASE();
     }
