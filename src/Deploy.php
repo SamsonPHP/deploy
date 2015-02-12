@@ -19,7 +19,7 @@ class Deploy extends Service
     public $remote;
 
     /** @var array Collection of path names to be ignored */
-    public $ignorePath = array('cms');
+    public $ignorePath = array('cms', 'vendor');
 
     /** Path to site document root on local server */
     public $sourceroot = '';
