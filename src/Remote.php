@@ -53,7 +53,7 @@ class Remote
 
         // Login
         if (!ftp_login($this->handle, $login, $pwd) !== false) {
-            $this->log('Cannot login to remote server [##@##]', $login, $pwd);
+            $this->log('Cannot login to remote server [##:##@##]', $login, $pwd, $host);
         }
 
         // Switch to passive mode
