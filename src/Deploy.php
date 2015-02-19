@@ -145,7 +145,7 @@ class Deploy extends Service
         }
 
         // Go to project remote folder
-        if ($this->remote->cd($this->wwwroot)) {
+        if (empty($this->wwwroot) || $this->remote->cd($this->wwwroot)) {
 
             $this->deploy();
 
